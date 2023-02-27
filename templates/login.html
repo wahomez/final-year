@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+    <main>
+         <section class="ticket-section section-padding">
+            <div class="section-overlay"></div>
+
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-6 col-10 mx-auto">
+                        <form class="custom-form ticket-form mb-5 mb-lg-0" method="POST">
+                            {% csrf_token %}
+                            <h2 class="text-center mb-4">Login Page</h2>
+                            <div class="mb-3">
+                              <label for="exampleInputEmail1" class="form-label">Email address</label>
+                              <input type="email" class="form-control" name="email" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                              <label for="exampleInputPassword1" class="form-label">Password</label>
+                              <input type="password" class="form-control" name="password">
+                            </div>
+                            <div class="mb-3">
+                                <a href="">Forgot your Password?</a>
+                              </div>
+                            
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <p class="text-center mb-4">Don't have an account?</p>
+                            <center><a href="{% url 'register' %}" type="button" class="btn btn-outline-primary">Sign Up For One</a></center>
+                          </form>
+                          
+                    </div>
+                </div>
+        </section>
+    </main>
+{% endblock content %}
