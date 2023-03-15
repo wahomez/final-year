@@ -14,7 +14,7 @@
 
                         <h1 class="text-white mb-5">Financial Freedom</h1>
 
-                        <a class="btn custom-btn smoothscroll" href="#section_2">Let's begin</a>
+                        <a class="btn custom-btn smoothscroll" href="#section_2">Order a Gas</a>
                     </div>
 
                     {% comment %} <div class="col-lg-12 col-12 mt-auto d-flex flex-column flex-lg-row text-center">
@@ -115,61 +115,50 @@
             </div>
         </section> {% endcomment %}
 
-        <section class="section-padding">
+        <section class="section-padding" id="section_2">
             <div class="container">
                 <div class="col-12 text-center">
                     <h2 class="mb-4">Product Page</h1>
                 </div>
-                <div class="row row-cols-1 row-cols-md-3 g-4">
+                
+                <div class="row row-cols-1 row-cols-md-3 g-4 ">
+                {% for product in products %}
                     <div class="col">
-                      <div class="card">
-                        <img src="{% static 'images/placeholder.png' %}" class="card-img-top " alt="...">
-                        <div class="card-body">
-                          <h5 class="card-title">Product</h5>
-                          <hr>
-                          <a href="#" class="btn btn-outline-secondary">Add to Cart</a>
-                            <a href="#" class="btn btn-outline-success">View</a>
-                            <h4 style="display: inline-block; float: right"><strong>$20</strong></h4>
+                        <div class="card artists-thumb">
+                            <img src="{{product.pic.url}}" class="card-img-top" height="300" weight="300"  alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">{{product.name}}</h5>
+                                <hr>
+                                <button data-product="{{product.id}}" data-action="add" href="{% url 'cart'  %}" class="btn btn-outline-secondary update-cart">Add to Cart</button>
+                                <h4 style="display: inline-block; float: right"><strong>Ksh. {{product.price}}</strong></h4>
+                            </div>
+                            <div class="artists-hover">
+                                <p>
+                                    <strong>Name:</strong>
+                                    {{product.name}}
+                                </p>
+        
+                                <p>
+                                    <strong>Size:</strong>
+                                    {{product.size}}
+                                </p>
+        
+                                <p>
+                                    <strong>Store from:</strong>
+                                    {{product.store}}
+                                </p>
+        
+                                <hr>
+        
+                                <p>
+                                    <strong>Amount:</strong>{{product.price}}
+                                </p>
+                            </div>
                         </div>
-                      </div>
                     </div>
-                    <div class="col">
-                      <div class="card">
-                        <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Product</h5>
-                            <hr>
-                            <a href="#" class="btn btn-outline-secondary">Add toCart</a>
-                            <a href="#" class="btn btn-outline-success">View</a>
-                            <h4 style="display: inline-block; float: right"><strong>$20</strong></h4>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="card">
-                        <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Product</h5>
-                            <hr>
-                            <a href="#" class="btn btn-outline-secondary">Add toCart</a>
-                            <a href="#" class="btn btn-outline-success">View</a>
-                            <h4 style="display: inline-block; float: right"><strong>$20</strong></h4>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="card">
-                        <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="..."> 
-                        <div class="card-body">
-                            <h5 class="card-title">Product</h5>
-                            <hr>
-                            <a href="#" class="btn btn-outline-secondary">Add toCart</a>
-                            <a href="#" class="btn btn-outline-success">View</a>
-                            <h4 style="display: inline-block; float: right"><strong>$20</strong></h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    
+                {% endfor %}
+                </div>
             </div>
         </section>
 

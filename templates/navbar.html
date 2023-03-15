@@ -7,6 +7,15 @@
         <link rel="icon" type="image/x-icon" href="{% static 'images/RT-logo.jpg' %}"> 
 
         {% if user.is_authenticated%}
+            <a href="{% url 'cart' %}" class="btn custom-btn d-lg-none ms-auto me-4 position-relative">
+                <i class="bi bi-cart4">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        99+
+                        <span class="visually-hidden">unread messages</span>
+                    </span>
+                </i>
+                
+            </a>
         {% else %}
             <a href="{% url 'login' %}" class="btn custom-btn d-lg-none ms-auto me-4">Login</a>
         {% endif %}
@@ -21,11 +30,11 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav align-items-lg-center ms-auto me-lg-5">
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_1">Home</a>
+                    <a class="nav-link click-scroll" href="/">Home</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_2">About</a>
+                    <a class="nav-link click-scroll" href="">About</a>
                 </li>
                 <li class="nav-item">
                     <form class="d-flex" role="search">
@@ -53,7 +62,7 @@
                 {% if user.is_authenticated %}
                     <li class="nav-item dropdown click-scroll">
                         <a class="nav-link dropdown-toggle" href="#" role="button" class="btn btn-outline-light" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{user.profile.pic.url}}" class="rounded-circle" height="30" width="30">{{user|upper}}
+                            <img src="{{user.profile.pic.url}}" class="rounded-circle" height="30" width="30"> {{user|upper}}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark">
                             <li><a class="dropdown-item" href="#">Account</a></li>
@@ -66,7 +75,15 @@
             </ul>
             <ul class="navbar-nav align-items-lg-center ms-auto me-lg-5">
                 {% if user.is_authenticated%}
-                    <a href="{% url 'cart' %}" class="btn custom-btn d-lg-block d-none"><i class="bi bi-cart4"></i></a>
+                    <a href="{% url 'cart' %}" class="btn custom-btn d-lg-block d-none position-relative">
+                        <i class="bi bi-cart4">
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                99+
+                                <span class="visually-hidden">unread messages</span>
+                            </span>
+                        </i>
+                        
+                    </a>
                 {% else %}
                     <a href="{% url 'login' %}" class="btn custom-btn d-lg-block d-none">Login</a>
                 {% endif %}

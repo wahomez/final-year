@@ -18,11 +18,12 @@ from . import views
 
 urlpatterns = [
     path("", views.homepage, name="home"),
-    path("ticket", views.ticket, name="ticket"),
-    path("login", views.login_page, name="login"),
-    path("register", views.register_page, name="register"),
-    path("profile-form", views.profile_form, name="profile-form"),
-    path("cart", views.cart_page, name="cart"),
-    path("checkout", views.checkout_page, name="checkout"),
-    path("logout", views.logout_page, name="logout")
+    path("ticket/", views.ticket, name="ticket"),
+    path("login/", views.login_page, name="login"),
+    path("register/", views.register_page, name="register"),
+    path("profile-form/", views.profile_form, name="profile-form"),
+    path("cart/", views.cart_page, name="cart"),
+    path("checkout/", views.checkout_page, name="checkout"),
+    path("update-item/", views.updateItem, name="update-item"),
+    path("logout/", views.logout_page, name="logout")
 ]

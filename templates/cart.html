@@ -41,16 +41,16 @@
                         <div class="tab-content shadow-lg mt-5" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="nav-ContactForm" role="tabpanel"
                                 aria-labelledby="nav-ContactForm-tab">
-                                <a class="btn btn-outline-dark" href="">&#x2190; Continue Shopping</a>
+                                <a class="btn btn-outline-dark" href="{% url 'home' %}">&#x2190; Continue Shopping</a>
 
                                 <br>
                                 <br>
                                 <table class="table">
                                     <tr>
-                                        <th><h5>Items: <strong>3</strong></h5></th>
+                                        <th><h5>Items: <strong>{{items.get_add_items}}</strong></h5></th>
                                         <th><h5>Total:<strong> $42</strong></h5></th>
                                         <th>
-                                            <a  style="float:right; margin:5px;" class="btn btn-success" href="">Checkout</a>
+                                            <a    style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
                                         </th>
                                     </tr>
                                 </table>
@@ -67,13 +67,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    {% for order in orders  %}
                                         <tr>
-                                            <th scope="row"><img class="thumbnail" src="{% static 'images/placeholder.png' %}" height="40" width="40"></th>
-                                            <td>Product 1</td>
-                                            <td>$20</td>
-                                            <td>2</td>
-                                            <td>$40</td>
+                                            <th scope="row"><img class="thumbnail" src="{{order.product.pic.url}}" height="50" width="50"></th>
+                                            <td>{{order.product}}</td>
+                                            <td>${{order.product.price}}</td>
+                                            <td>{{order.quantity}}</td>
+                                            <td>${{order.get_total}}</td>
                                         </tr>
+                                    {% endfor %}
+                                        
                                     </tbody>
                                     
                                 </table>

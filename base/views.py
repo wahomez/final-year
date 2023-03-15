@@ -2,11 +2,18 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import RegistrationForm, ProfileForm
-from .models import Profile
+from .models import Profile, Product, Order, Cart
+from django.http import JsonResponse
 
 # Create your views here.
 def homepage(request):
-    return render(request, "index.html")
+    product = Product.objects.all()
+
+    context = {
+        "products" : product
+    }
+
+    return render(request, "index.html", context)
 
 def ticket(request):
     return render(request, "ticket.html")
@@ -75,7 +82,26 @@ def profile_form(request):
 
 
 def cart_page(request):
-    return render(request, "cart.html")
+    order = Order.objects.filter(user=request.user)
+    item = Cart.objects.filter(user=request.user)
+    context = {
+        "orders" : order,
+        "items" : item
+    }
+    return render(request, "cart.html", context)
 
 def checkout_page(request):
-    return render(request, "checkout.html")
+    order = Order.objects.filter(user=request.user)
+    # print(order)
+    items = Cart.objects.filter(user=request.user)
+    # print(items)
+    
+    # item = order.product
+    context = {
+        "orders" : order,
+        "items" : items
+    }
+    return render(request, "checkout.html", context)
+
+def updateItem(request):
+    return JsonResponse("Item was added", safe=False)

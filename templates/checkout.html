@@ -41,16 +41,21 @@
                             <h6>Order Summary</h6>
                             <hr>
                             <table class="table">
-                                <tr>
-                                    <th scope="row"><img class="thumbnail" src="{% static 'images/placeholder.png' %}" height="40" width="40"></th>
-                                    <td>Product 1</td>
-                                    <td>$20</td>
-                                    <td>2</td>
-                                    </th>
-                                </tr>
+                                {% for order in orders %}
+                                    <tr>
+                                        <th scope="row"><img class="thumbnail" src="{{order.product.pic.url}}" height="50" width="50"></th>
+                                        <td>{{order.product}}</td>
+                                        <td>${{order.product.price}}</td>
+                                        <td>{{order.quantity}}</td>
+                                        </th>
+                                    </tr>
+                                {% endfor %}
+                                
                             </table>
                             <br>
-                            <h6>Items: 2 </h6>
+                            
+                            <h6>Items: {{items.get_cart_total}} </h6>
+                            
                             <h6>Total: $42</h6>
                         </form>
                     </div>
