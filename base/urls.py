@@ -22,8 +22,13 @@ urlpatterns = [
     path("login/", views.login_page, name="login"),
     path("register/", views.register_page, name="register"),
     path("profile-form/", views.profile_form, name="profile-form"),
-    path("cart/", views.cart_page, name="cart"),
-    path("checkout/", views.checkout_page, name="checkout"),
+    # path("predict/", views.predict, name="predict"),
+    path("checkout/<str:pk>/", views.checkout_page, name="checkout"),
+    path('paypal-test/<int:pk>', views.create_payment, name='paypal-test'),
+    path('paypal/execute_payment/', views.execute_payment, name='paypal-test/execute'),
+    path('paypal/cancel_payment/', views.cancel_payment, name='paypal-test/cancel'),
+    path("account/", views.account_page, name="account"),
     path("update-item/", views.updateItem, name="update-item"),
-    path("logout/", views.logout_page, name="logout")
+    path("order-history/", views.order_history, name="order-history"),
+    path("logout/", views.logout_page, name="logout"),
 ]

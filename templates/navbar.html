@@ -7,15 +7,21 @@
         <link rel="icon" type="image/x-icon" href="{% static 'images/RT-logo.jpg' %}"> 
 
         {% if user.is_authenticated%}
-            <a href="{% url 'cart' %}" class="btn custom-btn d-lg-none ms-auto me-4 position-relative">
-                <i class="bi bi-cart4">
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        99+
-                        <span class="visually-hidden">unread messages</span>
-                    </span>
-                </i>
+                {% comment %} <a href="ticket.html" class="btn custom-btn d-lg-none ms-auto me-4">Buy Ticket</a> {% endcomment %}
+
                 
-            </a>
+            <li class="nav-item dropdown click-scroll d-lg-none ms-auto me-4">
+                <a class="nav-link dropdown-toggle" href="#" role="button" class="btn btn-outline-light" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{user.profile.pic.url}}" class="rounded-circle" height="30" width="30"> {{user|upper}}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                    <li><a class="dropdown-item" href="{% url 'account' %}">Account</a></li>
+                    <li><a class="dropdown-item" href="{% url 'account' %}">Dashboard</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                    
+                </ul>
+            </li>
         {% else %}
             <a href="{% url 'login' %}" class="btn custom-btn d-lg-none ms-auto me-4">Login</a>
         {% endif %}
@@ -23,8 +29,8 @@
         
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -59,31 +65,22 @@
                 <li class="nav-item">
                     <a class="nav-link click-scroll" href="#section_6">Contact</a>
                 </li> {% endcomment %}
-                {% if user.is_authenticated %}
-                    <li class="nav-item dropdown click-scroll">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" class="btn btn-outline-light" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{user.profile.pic.url}}" class="rounded-circle" height="30" width="30"> {{user|upper}}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="#">Account</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-                            
-                        </ul>
-                    </li>
-                {% endif %}
+                
             </ul>
             <ul class="navbar-nav align-items-lg-center ms-auto me-lg-5">
                 {% if user.is_authenticated%}
-                    <a href="{% url 'cart' %}" class="btn custom-btn d-lg-block d-none position-relative">
-                        <i class="bi bi-cart4">
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                99+
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                        </i>
-                        
+                <li class="nav-item dropdown d-lg-block d-none click-scroll">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" class="btn btn-outline-light" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{user.profile.pic.url}}" class="rounded-circle" height="30" width="30"> {{user|upper}}
                     </a>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li><a class="dropdown-item" href="{% url 'account' %}">Account</a></li>
+                        <li><a class="dropdown-item" href="{% url 'account' %}">Dashboard</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                        
+                    </ul>
+                </li>
                 {% else %}
                     <a href="{% url 'login' %}" class="btn custom-btn d-lg-block d-none">Login</a>
                 {% endif %}

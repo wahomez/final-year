@@ -12,7 +12,8 @@
                     <div class="col-12 mt-auto mb-5 text-center">
                         <small>Welcome To</small>
 
-                        <h1 class="text-white mb-5">Financial Freedom</h1>
+                        <h1 class="text-white mb-5">Rureri Traders</h1>
+                        {% comment %} <h6 class="text-white mb-5">Where you .</h6> {% endcomment %}
 
                         <a class="btn custom-btn smoothscroll" href="#section_2">Order a Gas</a>
                     </div>
@@ -124,15 +125,16 @@
                 <div class="row row-cols-1 row-cols-md-3 g-4 ">
                 {% for product in products %}
                     <div class="col">
-                        <div class="card artists-thumb">
+                        <div class="card">
                             <img src="{{product.pic.url}}" class="card-img-top" height="300" weight="300"  alt="...">
                             <div class="card-body">
-                                <h5 class="card-title">{{product.name}}</h5>
+                                <h5 class="card-title">{{product.name}}  {{product.size}}</h5>
+                                <h5 class="card-title">Store: {{product.store}}</h5>
                                 <hr>
-                                <button data-product="{{product.id}}" data-action="add" href="{% url 'cart'  %}" class="btn btn-outline-secondary update-cart">Add to Cart</button>
+                                <a href="{% url 'checkout' product.product_id %}" class="btn btn-outline-secondary">Order now</a>
                                 <h4 style="display: inline-block; float: right"><strong>Ksh. {{product.price}}</strong></h4>
                             </div>
-                            <div class="artists-hover">
+                            {% comment %} <div class="artists-hover">
                                 <p>
                                     <strong>Name:</strong>
                                     {{product.name}}
@@ -153,7 +155,7 @@
                                 <p>
                                     <strong>Amount:</strong>{{product.price}}
                                 </p>
-                            </div>
+                            </div> {% endcomment %}
                         </div>
                     </div>
                     

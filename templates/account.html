@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<main>
+    <section class="ticket-section section-padding">
+       <div class="section-overlay"></div>
+
+       <div class="container">
+        {% for profile in profiles%}
+            <div class="card text-bg-light mb-3">
+                
+                <div class="card-body">
+                    <h4 class="text-center mb-4">Personal Information</h4>
+                    <table class="table">     
+                        <tbody>
+                            <tr>
+                                <th scope="row">Profile Pic</th>
+                                <td><img src= {{profile.pic.url}} class="rounded-circle" style="height:80px" alt="..."></td>
+                            </tr>
+                        <tr>
+                            <th scope="row">Username</th>
+                            <td>{{profile.user|upper}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Mobile Number</th>
+                            <td>{{profile.mobile_number}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Location </th>
+                            <td>{{profile.location}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Last Refill</th>
+                            <td>{{profile.last_refillspan}} days ago.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Number of Orders</th>
+                            <td><a href="{% url 'order-history' %}">{{orders}}</a></td>
+                        </tr>
+                        
+                        
+                        </tbody>
+                        
+                    </table>
+                </br>
+                    <h4 class="text-center mb-4">Account Information</h4>
+                    <table class="table">     
+                        <tbody>
+                            <tr>
+                                <th scope="row">Gas Brand</th>
+                                <td>{{profile.gas_brand}}</td>
+                            </tr>
+                        <tr>
+                            <th scope="row">Gas Size</th>
+                            <td>{{profile.gas_size}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Married?</th>
+                            <td>{{profile.married}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">HouseHold Number</th>
+                            <td>{{profile.household_number}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Kids?</th>
+                            <td>{{profile.kids_number}} days ago.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Kids below 3?</th>
+                            <td>{{profile.kids_below3}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Cooking sequence</th>
+                            <td>{{profile.cooking_sequence}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Cooking Method</th>
+                            <td>{{profile.cooking_method}}</td>
+                        </tr>
+
+                        
+                        
+                        </tbody>
+                        
+                    </table>
+                    
+                    <a href="{% url 'profile-form' %}" type="button" class = "btn btn-outline-primary">Update</a>
+                </div>
+            </div>
+        {% endfor %}
+       </div>
+        </div>
+    </section>
+</main>
+
+{% endblock content %}
