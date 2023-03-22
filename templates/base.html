@@ -29,6 +29,8 @@
 
     <link href="{% static 'css/templatemo-festava-live.css' %}" rel="stylesheet"> 
 
+    
+
     <!--
 
 TemplateMo 583 Festava Live
@@ -48,7 +50,7 @@ https://templatemo.com/tm-583-festava-live
                     <p class="d-flex me-4 mb-0">
                         <i class="bi-person custom-icon me-2"></i>
                         {% if user.is_authenticated %}
-                            <strong class="text-dark">Your predicted refill is on {{user.profile.updated}}</strong>
+                            <strong class="text-dark">Your predicted refill is on {{user.profile.predicted_refill}}</strong>
                         {% else %}
                             <strong class="text-dark">Get effecient premium services at convenient non-premium cost</strong>
                         {% endif %}

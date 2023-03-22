@@ -16,7 +16,7 @@
                             {% for order in orders  %}
                                 <div class="card text-bg-light mb-3">
                                     <div class="card-header">
-                                        <h7><center><strong>Order ID :</strong> {{order.id}}</center></h7>
+                                        <h7><center><strong>Order ID :</strong> {{order.order_id|truncatechars:10}}</center></h7>
                                       </div>
                                       <div class="card-body">
                                         <table class="table">     
@@ -51,7 +51,7 @@
                                             </tbody>
                                             
                                         </table>
-                                        <center><a href="{% url 'checkout' order.id %}" class="btn btn-outline-primary">Go To order</a></center>
+                                        <center><a href="{% url 'checkout' order.order_id %}" class="btn btn-outline-primary">Go To order</a></center>
                                     </div>
                                 </div>
                             {% endfor %}

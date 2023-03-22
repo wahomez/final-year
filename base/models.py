@@ -58,7 +58,8 @@ class Profile(models.Model):
     kids_below3 = models.IntegerField(default=0, null=True)
     cooking_sequence = models.IntegerField(null=True)
     cooking_method = models.CharField(max_length=200, choices=SEQUENCE_CHOICES, null=True)
-    last_refillspan = models.IntegerField(null=True)
+    last_refill = models.DateField(null=True)
+    predicted_refill = models.DateField(null=True)
     updated = models.DateTimeField(default=timezone.now, null=True)
 
     def __str__(self):
@@ -96,7 +97,7 @@ class Order(models.Model):
     date_ordered = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.order_id)
     
 
     
@@ -107,7 +108,7 @@ class Payment(models.Model):
     date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return str(self.user) + str("-") + str(self.id)
+        return str(self.user)
 
 
 

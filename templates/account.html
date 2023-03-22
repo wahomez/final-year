@@ -22,6 +22,10 @@
                             <td>{{profile.user|upper}}</td>
                         </tr>
                         <tr>
+                            <th scope="row">Email</th>
+                            <td>{{user.email}}</td>
+                        </tr>
+                        <tr>
                             <th scope="row">Mobile Number</th>
                             <td>{{profile.mobile_number}}</td>
                         </tr>
@@ -30,8 +34,8 @@
                             <td>{{profile.location}}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Last Refill</th>
-                            <td>{{profile.last_refillspan}} days ago.</td>
+                            <th scope="row">Last Refill Date</th>
+                            <td>{{profile.last_refill}}</td>
                         </tr>
                         <tr>
                             <th scope="row">Number of Orders</th>
@@ -64,7 +68,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Kids?</th>
-                            <td>{{profile.kids_number}} days ago.</td>
+                            <td>{{profile.kids_number}}</td>
                         </tr>
                         <tr>
                             <th scope="row">Kids below 3?</th>

@@ -21,7 +21,7 @@ class RegistrationForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        exclude = ("user", "updated")
+        exclude = ("user", "updated", "predicted_refill")
 
         widgets = {
             "pic" : forms.FileInput(attrs={"class":"form-control", "type":"file"}),
@@ -35,7 +35,7 @@ class ProfileForm(forms.ModelForm):
             "kids_below3" : forms.TextInput(attrs={"class":"form-control"}),
             "cooking_sequence" : forms.TextInput(attrs={"class":"form-control"}),
             "cooking_method" : forms.Select(attrs={"class":"form-control"}),
-            "last_refillspan" : forms.TextInput(attrs={"class":"form-control"}),
+            "last_refill" : forms.TextInput(attrs={"class":"form-control", "type":"date"}),
         }
 
 
