@@ -28,12 +28,12 @@ DEBUG = True
 
 AUTH_USER_MODEL = 'base.User'
 
-ALLOWED_HOSTS = ['localhost',"127.0.0.1", '6762-102-135-170-111.in.ngrok.io']
+ALLOWED_HOSTS = ['localhost',"127.0.0.1", '6762-102-135-170-111.in.ngrok.io', 'gas-rx83.onrender.com']
 
-CSRF_TRUSTED_ORIGINS = ['https://6762-102-135-170-111.in.ngrok.io']
+CSRF_TRUSTED_ORIGINS = ["https://gas-rx83.onrender.com"]
 
 CORS_ALLOWED_ORIGINS = [
-    'https://6762-102-135-170-111.in.ngrok.io'
+     "https://gas-rx83.onrender.com"
     ]
 
 
