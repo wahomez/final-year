@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import RegistrationForm, ProfileForm
-from .models import Profile, Product, Order, Payment
+from .models import Profile, Product, Order, Payment, UserLocation
 from django.http import JsonResponse, HttpResponseServerError
 from django.contrib.auth.decorators import login_required
 from .keys import * 
@@ -16,6 +16,36 @@ from datetime import datetime, timedelta
 import requests
 from requests.auth import HTTPBasicAuth
 import base64
+from .maps import get_directions
+
+def directions(request):
+    # Get the user's location
+    user_location = UserLocation.objects.filter(user=request.user).last()
+
+    # Get the location of one of your shops (replace with your own data)
+    shop_latitude = 37.7749
+    shop_longitude = -122.4194
+
+    # Call the get_directions function to get the directions
+    directions_result = get_directions(f"{user_location.latitude}, {user_location.longitude}",
+                                        f"{shop_latitude}, {shop_longitude}")
+
+    # Render the template with the directions and map data
+    context = {'directions': directions_result,
+                'user_latitude': user_location.latitude,
+                'user_longitude': user_location.longitude,
+                'shop_latitude': shop_latitude,
+                'shop_longitude': shop_longitude}
+    return render(request, 'directions.html', context)
+
+def pin_location(request):
+    if request.method == 'POST':
+        latitude = request.POST.get('latitude')
+        longitude = request.POST.get('longitude')
+        if latitude and longitude:
+            location = UserLocation.objects.create(latitude=latitude, longitude=longitude)
+            return redirect('directions', location_id=location.id)
+    return render(request, 'pin_location.html')
 # import jsonify
 
 # Create your views here.
@@ -62,7 +92,7 @@ def stk_push(request, pk):
         "PartyA": "254" + mobile,
         "PartyB": 174379,
         "PhoneNumber": "254" + mobile,
-        "CallBackURL": "https://api.darajambili.com/express-payment",
+        "CallBackURL": "https://6762-102-135-170-111.in.ngrok.io/callback",
         "AccountReference": "CompanyXLTD",
         "TransactionDesc": "Payment of X" 
     }
@@ -90,6 +120,49 @@ def stk_push(request, pk):
         print("Code didn't work")
     # print("Token:", access_token)
     return HttpResponse("We are good")
+
+def mpesa_callback(request):
+    try:
+        if request.method == "POST":
+            request_data = json.loads(request.body)
+            print(request_data)
+            return HttpResponse(json.dumps(request_data), content_type='application/json')
+        else:
+            return HttpResponse("Error")
+    except:
+        return HttpResponse("Nothing")
+    # if request.method == 'POST':
+    #     # Get the request data as a JSON object
+    #     request_data = json.loads(request.body)
+        
+    #     # Get the transaction details from the request data
+    #     return HttpResponse(json.dumps(request_data), content_type='application/json')
+    # else:
+    #     return HttpResponse("Nothing")
+    #     transaction = request_data['Body']['stkCallback']['CallbackMetadata']['Item']
+        
+    #     # Check if the payment was successful
+    #     if transaction[0]['Value'] == '0':
+    #         # Payment was successful, process the payment
+    #         transaction_id = transaction[1]['Value']
+    #         amount = transaction[3]['Value']
+    #         # other transaction details here
+            
+    #         # TODO: Add your payment processing logic here
+            
+    #         # Return a success response to Daraja
+    #         response_data = {
+    #             'ResultCode': 0,
+    #             'ResultDesc': 'Success'
+    #         }
+    #         return HttpResponse(json.dumps(response_data), content_type='application/json')
+        
+    # # Return an error response to Daraja
+    # response_data = {
+    #     'ResultCode': 1,
+    #     'ResultDesc': 'Error'
+    # }
+    # return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 def ticket(request):
     return render(request, "ticket.html")
@@ -206,7 +279,7 @@ def profile_form(request):
     return render(request, "profile.html", context)
 
 
-@login_required(login_url="/login")
+# @login_required(login_url="/login")
 def checkout_page(request,pk):
     try:
         product = Product.objects.get(product_id=pk)
@@ -349,3 +422,6 @@ def order_history(request):
         "orders" : order
     }
     return render(request, "cart.html", context)
+
+def map_view(request):
+    return render(request, 'maps.html')

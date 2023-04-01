@@ -16,14 +16,18 @@ Including another URLconf
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path("", views.homepage, name="home"),
     path("ticket/", views.ticket, name="ticket"),
     path("stk-push/<str:pk>/", views.stk_push, name="stk-push"),
+    path("callback/", views.mpesa_callback, name="mpesa-callback"),
     path("login/", views.login_page, name="login"),
     path("register/", views.register_page, name="register"),
     path("profile-form/", views.profile_form, name="profile-form"),
-    # path("predict/", views.predict, name="predict"),
+    path("map/", views.map_view, name="map"),
+    path("map-directions/", views.directions, name="map-directions"),
+    path("pin-location/", views.pin_location, name="pin-location"),
     path("checkout/<str:pk>/", views.checkout_page, name="checkout"),
     path('paypal-test/<str:pk>', views.create_payment, name='paypal-test'),
     path('paypal/execute_payment/', views.execute_payment, name='paypal-test/execute'),

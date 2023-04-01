@@ -1,0 +1,10 @@
+{% if directions %}
+    <h2>Directions from {{ directions[0]['legs'][0]['start_address'] }} to {{ directions[0]['legs'][0]['end_address'] }}</h2>
+    <ol>
+    {% for step in directions[0]['legs'][0]['steps'] %}
+        <li>{{ step['html_instructions'] }}</li>
+    {% endfor %}
+    </ol>
+{% else %}
+    <p>No directions found.</p>
+{% endif %}

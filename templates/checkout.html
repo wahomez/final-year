@@ -23,7 +23,7 @@
                                         <label for="exampleInputEmail1" class="form-label">Phone Number</label>
                                         <div class="input-group">
                                             <span class="input-group-text" id="basic-addon3">+254</span>
-                                            <input type="text" class="form-control" name="mobile" aria-describedby="basic-addon3" placeholder="712345678">
+                                            <input type="text" class="form-control" name="mobile" aria-describedby="basic-addon3" placeholder="712345678" required>
                                         </div>
                                         <div id="emailHelp" class="form-text">You will receive an M-Pesa pop-up on your phone. Please enter your M-Pesa pin to complete the transaction</div>
                                     </div>
@@ -90,7 +90,7 @@
                                     </div>
                                     <div class="col-12">
                                         <label for="email" class="form-label">Contact Phone Number <span class="text-muted"></span></label>
-                                        <input type="email" class="form-control" name="email" value={{user.profile.mobile_number}}>
+                                        <input type="text" class="form-control" name="email" value={{user.profile.mobile_number}}>
                                         <div class="invalid-feedback">
                                             Please enter a valid email address
                                         </div>

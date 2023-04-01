@@ -28,7 +28,13 @@ DEBUG = True
 
 AUTH_USER_MODEL = 'base.User'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost',"127.0.0.1", '6762-102-135-170-111.in.ngrok.io']
+
+CSRF_TRUSTED_ORIGINS = ['https://6762-102-135-170-111.in.ngrok.io']
+
+CORS_ALLOWED_ORIGINS = [
+    'https://6762-102-135-170-111.in.ngrok.io'
+    ]
 
 
 # Application definition
@@ -40,8 +46,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'base'
+    'base',
+
+    # 'defender',
 ]
+
+# DEFENDER_LOGIN_FAILURE_LIMIT = 3
+# DEFENDER_COOLOFF_TIME = 300
+# DEFENDER_LOCKOUT_TEMPLATE = 'defender/locked_out.html'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,6 +64,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # 'defender.middleware.FailedLoginMiddleware',
 ]
 
 ROOT_URLCONF = 'gas.urls'
@@ -81,14 +96,11 @@ WSGI_APPLICATION = 'gas.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': '28hlr64RpkHqB9MJtgDq',
-        'HOST': 'containers-us-west-69.railway.app',
-        'PORT': '6052',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 
 # Password validation

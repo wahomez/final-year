@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Pin Your Location</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBq8Dq8LSysLUuMa80PVsOqO2ZA33AZWw"></script>
+    <script>
+        var map;
+        var marker;
+
+        function initMap() {
+            // Initialize the map
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 37.7749, lng: -122.4194},
+                zoom: 8
+            });
+
+            // Listen for clicks on the map
+            map.addListener('click', function(event) {
+                placeMarker(event.latLng);
+                document.getElementById('latitude').value = event.latLng.lat();
+                document.getElementById('longitude').value = event.latLng.lng();
+            });
+
+            // Place a marker on the map
+            function placeMarker(location) {
+                if (marker) {
+                    marker.setPosition(location);
+                } else {
+                    marker = new google.maps.Marker({
+                        position: location,
+                        map: map
+                    });
+                }
+            }
+        }
+        initMap(); // Call the initMap() function to initialize the map
+    </script>
+</head>
+<body>
+    <h1>Pin Your Location</h1>
+    <div id="map" style="width: 500px; height: 500px;"></div>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="latitude" id="latitude" required>
+        <input type="hidden" name="longitude" id="longitude" required>
+        <input type="submit" value="Pin Your Location">
+    </form>
+</body>
+</html>

@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
-from django.utils import timezone
+from datetime import datetime
 import uuid
 
 #location
@@ -44,6 +44,14 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
     
+class UserLocation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+
+    def __str__(self):
+        return f"{self.user.username}'s location ({self.latitude}, {self.longitude})"
+    
 class Profile(models.Model):
     profile_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE, null=True)
@@ -60,7 +68,7 @@ class Profile(models.Model):
     cooking_method = models.CharField(max_length=200, choices=SEQUENCE_CHOICES, null=True)
     last_refill = models.DateField(null=True)
     predicted_refill = models.DateField(null=True)
-    updated = models.DateTimeField(default=timezone.now, null=True)
+    updated = models.DateTimeField(default=datetime.now, null=True)
 
     def __str__(self):
         return self.user.username
@@ -94,7 +102,7 @@ class Order(models.Model):
     product = models.ForeignKey(Product, related_name="order_product", on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     paid = models.BooleanField(default=False)
-    date_ordered = models.DateTimeField(default=timezone.now)
+    date_ordered = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
         return str(self.order_id)
@@ -105,7 +113,7 @@ class Payment(models.Model):
     payment_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, related_name="payment", on_delete=models.CASCADE)
     order = models.ForeignKey(Order, related_name="payment_order", on_delete=models.SET_NULL, null=True)
-    date = models.DateTimeField(default=timezone.now)
+    date = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
         return str(self.user)

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<head>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBq8Dq8LSysLUuMa80PVsOqO2ZA33AZWw"></script>
+</head>
+<main>
+    <section class="ticket-section section-padding">
+       <div class="section-overlay"></div>
+
+
+       <div class="container">
+        <div class="card text-bg-light mb-3">
+          <div class="card-body">
+            <h4 class="text-center mb-4">Where to Find us</h4>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m21!1m12!1m3!1d63824.4028695968!2d36.991435017329735!3d-1.1424664711539212!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m6!3e0!4m0!4m3!3m2!1d-1.1425524999999999!2d37.026454699999995!5e0!3m2!1sen!2ske!4v1680035527040!5m2!1sen!2ske" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          
+        </div>
+        
+       </div>
+        </div>
+    </section>
+</main>
+{% comment %} <script>
+    function initMap() {
+        // Initialize the map
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: {lat: 37.7749, lng: -122.4194} // Replace with your default center location
+        });
+      
+        // Get the user's location and add a marker
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var userLocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            var userMarker = new google.maps.Marker({
+              position: userLocation,
+              map: map,
+              title: 'Your Location'
+            });
+            map.setCenter(userLocation);
+          }, function() {
+            // Handle location errors
+          });
+        } else {
+          // Handle no geolocation support
+        }
+      
+        // Add markers for your shop locations
+        var shopLocations = [
+          {lat: 37.7749, lng: -122.4194}, // Replace with your shop locations
+          {lat: 37.7858, lng: -122.4064},
+          {lat: 37.7897, lng: -122.4085}
+        ];
+        for (var i = 0; i < shopLocations.length; i++) {
+          var shopMarker = new google.maps.Marker({
+            position: shopLocations[i],
+            map: map,
+            title: 'Shop ' + (i + 1)
+          });
+        }
+      }      
+</script> {% endcomment %}
+{% endblock content %}
