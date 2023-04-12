@@ -19,8 +19,8 @@ GAS_CHOICES = [
 ]
 
 SIZE_CHOICES = [
-    ("6kgs", "6kgs"),
-    ("13kgs", "13kgs"),
+    ("6 kgs", "6 kgs"),
+    ("13 kgs", "13 kgs"),
 ]
 
 SEQUENCE_CHOICES = [
@@ -103,6 +103,7 @@ class Order(models.Model):
     quantity = models.IntegerField(default=1)
     paid = models.BooleanField(default=False)
     date_ordered = models.DateTimeField(default=datetime.now)
+    completed = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         return str(self.order_id)
@@ -117,6 +118,60 @@ class Payment(models.Model):
 
     def __str__(self):
         return str(self.user)
+    
+class Delivery(models.Model):
+    delivery_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, related_name="delivery_user", on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey(Order, related_name="delivery_order", on_delete=models.SET_NULL, null=True)
+    delivery_point = models.CharField(max_length=200)
+    date = models.DateTimeField(null=True, blank=True)
+
+class Invoice(models.Model):
+    invoice_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    first_name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200)
+    email = models.EmailField()
+    location = models.CharField(max_length=200)
+    product = models.ForeignKey(Product, related_name="invoiceb_product", on_delete=models.CASCADE)
+    order_date = models.CharField(max_length=200)
+    price = models.IntegerField()
+    quantity = models.IntegerField()
+    total = models.IntegerField()
+    payment_date = models.DateTimeField(blank=True,null=True)
+    date_generated = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.invoice_id)
+    
+
+
+class Transaction(models.Model):
+    TRANS_CAT = [
+        ("deposit", "deposit"),
+        ("payment", "payment")
+    ]
+    trans_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    trans_type = models.CharField(max_length=200, choices=TRANS_CAT, null=True)
+    recipient = models.CharField(max_length=200, null=True)
+    details = models.CharField(max_length=200, null=True)
+    amount = models.FloatField()
+    date = models.DateTimeField(default=datetime.now)
+
+    def __str__(self):
+        return str(self.trans_id)
+    
+class Saving(models.Model):
+    account_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="savings", unique=True)
+    # transaction = models.ForeignKey(Transaction, on_delete=models.SET_NULL, null=True)
+    balance = models.FloatField(default=0.0)
+    date_created = models.DateTimeField(default=datetime.now)
+
+    def __str__(self):
+        return str(self.account_id)
+
+    
 
 
 

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Profile
+from .models import User, Profile, Order
 
 class RegistrationForm(UserCreationForm):
     class Meta:
@@ -38,5 +38,9 @@ class ProfileForm(forms.ModelForm):
             "last_refill" : forms.TextInput(attrs={"class":"form-control", "type":"date"}),
         }
 
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ("product", "quantity")
 
 

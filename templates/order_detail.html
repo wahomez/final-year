@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<main>
+    <section class="ticket-section section-padding">
+       <div class="section-overlay"></div>
+
+       <div class="container">
+            <div class="card text-bg-light mb-3">
+            {% for order in  order%}
+                <div class="card-body">
+                    <a class="btn btn-outline-dark" href="{% url 'order-history' %}">&#x2190; Back to Order History</a>
+                    <h4 class="text-center mb-4">Order Details</h4>
+                    <div class="container">
+                        
+                            {% comment %} <h7>Order ID: {{order.order_id}} </h7><br> {% endcomment %}
+                            {% comment %} {% if orders %} {% endcomment %}
+                            <div class="card">
+                                <div class="card-body">
+                                    {% comment %} <h7>Order Placed on {{order.date_ordered}}</h7><br> {% endcomment %}
+                                    <div class="row g-0">
+                                        <div class="col-md-2">
+                                            <img src="{{order.product.pic.url}}" height="150" weight="150"  alt="...">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <table class="table">     
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">Order ID</th>
+                                                        <td>{{order.order_id}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Product</th>
+                                                        <td>{{order.product.name}} {{order.product.size}}</td>
+                                                    </tr>
+                                                <tr>
+                                                    <th scope="row">Quantity</th>
+                                                    <td>{{order.quantity}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Price</th>
+                                                    <td>Ksh. {{order.product.price}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Order date</th>
+                                                    <td>{{order.date_ordered}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Paid?</th>
+                                                    <td>{{order.paid}}</td>
+                                                </tr>
+                                                </tbody>
+                                                
+                                            </table>
+                                            
+                                        </div>
+                                        {% if order.delivery_order.date == None %}
+                                            <div class="col-md-2">
+                                                <a href="{% url 'direction' order.order_id %}" type="button" class="btn btn-outline-primary">Track Delivery</a>
+                                                
+                                            </div>
+                                        {% else %}
+                                        {% endif %}
+                                        
+                                </div>
+                            </div>
+                        
+                        
+                        {% comment %} {%else%} {% endcomment %}
+                        {% comment %} <h8><center>You have no previous orders. To make an order visit the <a href="{% url 'home' %}"><strong>Home</strong></a> page</center></h8> {% endcomment %}
+                        {% comment %} {% endif %} {% endcomment %}
+                    </div>
+                    
+                </div>
+                <br>
+                <div class="row g-0">
+                    <div class="col-md-5">
+                        <div class="card">
+                            <div class="card-header">
+                                <center><strong>Payment Information</strong></center>
+                            </div>
+                            <div class="card-body">
+                                <h7>Payment Method</h7><br>
+                                <h7 class="text-muted">Mpesa</h7>
+                                <br></br>
+                                <h7>Payment Amount</h7><br>
+                                <h7 class="text-muted">{{order.product.price}}</h7>
+                                <br></br>
+                                <h7>Delivery Fees</h7><br>
+                                <h7 class="text-muted">0</h7>
+                                <hr class="my-4">
+                                <h7>Total</h7><br>
+                                <h7 class="text-muted">{{order.product.price}}</h7>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="col-md-1"></div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <center><strong>Delivery Information</strong></center>
+                            </div>
+                            <div class="card-body">
+                                <h7>Delivery Address</h7><br>
+                                <h7 class="text-muted">{{order.user.profile.location}}</h7>
+                                <br></br>
+                                <h7>Contact Phone Number</h7><br>
+                                <h7 class="text-muted">{{order.user.profile.mobile_number}}</h7>
+                                <br></br>
+                                <h7>Delivery Distance</h7><br>
+                                <h7 class="text-muted">27.2 miles</h7>
+                                <br></br>
+                                <h7>Estimated Duration</h7><br>
+                                <h7 class="text-muted">48 mins</h7>
+                            </div>
+                        </div>
+                        <br>
+                        
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        
+       </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -1,50 +1,306 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
 <head>
-    <meta charset="UTF-8">
-    <title>Pin Your Location</title>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBq8Dq8LSysLUuMa80PVsOqO2ZA33AZWw"></script>
-    <script>
-        var map;
-        var marker;
-
-        function initMap() {
-            // Initialize the map
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: 37.7749, lng: -122.4194},
-                zoom: 8
-            });
-
-            // Listen for clicks on the map
-            map.addListener('click', function(event) {
-                placeMarker(event.latLng);
-                document.getElementById('latitude').value = event.latLng.lat();
-                document.getElementById('longitude').value = event.latLng.lng();
-            });
-
-            // Place a marker on the map
-            function placeMarker(location) {
-                if (marker) {
-                    marker.setPosition(location);
-                } else {
-                    marker = new google.maps.Marker({
-                        position: location,
-                        map: map
-                    });
-                }
-            }
-        }
-        initMap(); // Call the initMap() function to initialize the map
-    </script>
 </head>
-<body>
-    <h1>Pin Your Location</h1>
-    <div id="map" style="width: 500px; height: 500px;"></div>
-    <form method="post">
-        {% csrf_token %}
-        <input type="hidden" name="latitude" id="latitude" required>
-        <input type="hidden" name="longitude" id="longitude" required>
-        <input type="submit" value="Pin Your Location">
-    </form>
-</body>
-</html>
+<main>
+    <section class="ticket-section section-padding">
+       <div class="section-overlay"></div>
+
+
+       <div class="container">
+        <div class="card text-bg-light mb-3">
+          <div class="card-body">
+            {% comment %} <a class="btn btn-outline-dark" href="{% url 'order-details' %}">&#x2190; Back to Order Details</a> {% endcomment %}
+            <section class="contact-section section-padding" id="section_6">
+                <div class="container">
+                    <div class="row">
+    
+                        <div class="col-lg-8 col-12 mx-auto">
+                            <h2 class="text-center mb-4">Delivery Tracking</h2>
+    
+                            <nav class="d-flex justify-content-center">
+                                <div class="nav nav-tabs align-items-baseline justify-content-center" id="nav-tab"
+                                    role="tablist">
+                                    <button class="nav-link active" id="nav-ContactForm-tab" data-bs-toggle="tab"
+                                        data-bs-target="#nav-ContactForm" type="button" role="tab"
+                                        aria-controls="nav-ContactForm" aria-selected="false">
+                                        <h5>Trip Details</h5>
+                                    </button>
+    
+                                    <button class="nav-link" id="nav-ContactMap-tab" data-bs-toggle="tab"
+                                        data-bs-target="#nav-ContactMap" type="button" role="tab"
+                                        aria-controls="nav-ContactMap" aria-selected="false">
+                                        <h5>Google Map View</h5>
+                                    </button>
+                                </div>
+                            </nav>
+    
+                            <div class="tab-content shadow-lg mt-5" id="nav-tabContent">
+                                <div class="tab-pane fade show active" id="nav-ContactForm" role="tabpanel"
+                                    aria-labelledby="nav-ContactForm-tab">
+                                    <div id="output"></div>
+                                </div>
+    
+                                <div class="tab-pane fade" id="nav-ContactMap" role="tabpanel"
+                                    aria-labelledby="nav-ContactMap-tab">
+                                    <div id="map" style="height: 400px;"></div>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        <br>
+                        
+                    </div>
+                </div>
+            </section>
+            <section class="ftco-section" id="book">
+                <center>
+                <div class="form-inline">
+                  <form method="POST" action="" class="form-horizontal">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label for="from" class="col-xs-2 control label">
+                        <i class="far fa-dot-circle"></i>
+                        <div class="col-xs-4">
+                          <input type="text" id="to" placeholder="Origin" class="form-control" value="Juja, Kenya" hidden>
+                        </div>
+                      </label>
+                    </div>
+                    <div class="form-group">
+                      <label for="to" class="col-xs-2 control label">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="col-xs-4">
+                          <input type="text" id="from" placeholder="Destination" class="form-control" value="Thika, Kenya" hidden>
+                        </div>
+                      </label>
+                    </div>
+                    <div class="col-xs-offset-2 col-xs-10">
+                      <button class="btn btn-outline-success" type="submit">End Delivery</button>
+                      <button class="btn btn-info" onclick="calcRoute()" hidden>
+                          <i class="bi bi-sign-turn-right" ></i>
+                      </button>
+                    </div>
+                  </form>
+                  
+                </div>
+              </center>
+          
+              <button id="startButton" onclick="startTracking()" hidden>Start</button>
+          
+                
+              
+                <div class="container">
+                  
+                </div>
+              </section>
+          
+          
+              <footer class="ftco-footer ftco-bg-dark ftco-section">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-12 text-center">
+                    </div>
+                  </div>
+                </div>
+              </footer>
+          
+            <!--datatables-->
+          
+          <script type="text/javascript" src="DataTables/datatables.min.js"></script>
+          <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+          <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+          <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.13.2/b-2.3.4/b-colvis-2.3.4/b-html5-2.3.4/b-print-2.3.4/r-2.4.0/datatables.min.js"></script>
+          <script>
+            $(document).ready( function () {
+              $('#table_id').DataTable();
+          } );
+          </script>
+          <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyDBq8Dq8LSysLUuMa80PVsOqO2ZA33AZWw&libraries=places"></script>
+          
+          <script>
+            
+            var mylating={
+              lat: 38.3460, lng: -0.4907
+            };
+            var marker = new google.maps.Marker({
+              position: mylating,
+              map: map,
+              icon: {
+                  path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                  strokeColor: "#FF0000",
+                  scale: 5
+              },
+              title: "Current location"
+          });
+          
+          
+            //method to get users location and pass the longitude and latitude to my maps? 
+            var mapOptions={
+              center:mylating,
+              zoom:13,
+              maTypeId:google.maps.MapTypeId.ROADMAP
+            };
+          
+            //create map
+            getCurrentLocation()
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+          
+            //Create a directions service object to use thr route method
+          
+            var directionsService = new google.maps.DirectionsService();
+          
+            //create a directions rendere object which we will use to display
+          
+            var directionsDisplay= new google.maps.DirectionsRenderer();
+          
+            //bind the directions rendere to the map
+          
+            directionsDisplay.setMap(map);
+          
+            //function
+            function startTracking() {
+            if (navigator.geolocation) {
+              navigator.geolocation.watchPosition(function(position) {
+                var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                
+                // Set the marker icon to a circle with the heading of travel
+                marker.setIcon({
+                  path: google.maps.SymbolPath.CIRCLE,
+                  scale: 5,
+                  fillColor: '#000',
+                  fillOpacity: 0.8,
+                  strokeColor: '#fff',
+                  strokeWeight: 2,
+                  rotation: position.coords.heading
+                });
+                
+                marker.setPosition(latLng);
+                map.setCenter(latLng);
+                map.setZoom(15);
+                calcDirection(latLng);
+              });
+            } else {
+              alert("Geolocation is not supported by this browser.");
+            }
+          }
+          
+          
+          
+          function calcDirection(latLng) {
+              var request = {
+                  origin: latLng,
+                  destination: document.getElementById("to").value,
+                  travelMode: google.maps.TravelMode.DRIVING
+              };
+              directionsService.route(request, function(result, status) {
+                  if (status == google.maps.DirectionsStatus.OK) {
+                      var distance = result.routes[0].legs[0].distance.text;
+                      var duration = result.routes[0].legs[0].duration.text;
+                      var direction = result.routes[0].legs[0].steps[0].instructions;
+                      var output = document.querySelector("#output");
+                      output.innerHTML = "<div class='alert alert-info'>Distance : " + distance + ".<br>Duration : " + duration + ".<br>Direction : " + direction + ".</div>";
+                  } else {
+                      output.innerHTML = "<div class='alert alert-danger'> Could not retrieve delivery directions.</div>";
+                  }
+              });
+          }
+          
+            function calcRoute(){
+                //get users current location
+                marker.setPosition(null);
+              navigator.geolocation.clearWatch(null);
+                //create request
+                var request={
+                  origin:document.getElementById("from").value,
+                  destination:document.getElementById("to").value,
+                  travelMode:google.maps.TravelMode.DRIVING,
+                  unitSystem: google.maps.UnitSystem.IMPERIAL 
+          
+                }
+          
+                //pass the request to the route method
+                directionsService.route(request, (result, status) => {
+                  if(status == google.maps.DirectionsStatus.OK){
+                    //get distance and time
+                    const output = document.querySelector('#output');
+                    output.innerHTML = "<div class='alert alert-success' role='alert'>From : " + document.getElementById("from").value + ".<br> To : " + document.getElementById("to").value + ". <br>Distance  <i class='fas fa-road'></i> :" + result.routes[0].legs[0].distance.text + ".<br> Estimated Duration :" + result.routes[0].legs[0].duration.text + ".</div>"; 
+                  
+          
+                    //display route
+                    directionsDisplay.setDirections(result);
+                  }else{
+                    //delete route from map
+                    directionsDisplay.setDirections({routes:[]});
+          
+                    //map center
+                    map.setCenter(mylating);
+          
+                    //show error message
+                    output.innerHTML="<div class='alert alert-danger'><i class='bi bi-exclamation-triangle'></i></i> Could not retrive delivery distance.</div>";
+                  }
+                });
+            
+          
+            }
+          
+            //get user current location
+          
+            function getCurrentLocation() {
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(
+                (position) => {
+                  // Reverse geocode the coordinates to obtain the place name
+                  const geocoder = new google.maps.Geocoder();
+                  const currentLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                  geocoder.geocode({ 'latLng': currentLocation }, (results, status) => {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                      if (results[0]) {
+                        // Set user's current location as the origin
+                        const currentLocationName = results[0].formatted_address;
+                        document.getElementById("to").value = currentLocationName;
+                        // Call the calcRoute() function with updated origin
+                        calcRoute();
+                      } else {
+                        alert("No results found");
+                      }
+                    } else {
+                      console.log(status);
+                      alert("Geocoder failed due to: " + status);
+                    }
+                  });
+                },
+                (error) => {
+                  console.log(error);
+                  alert("Unable to retrieve your location");
+                }
+              );
+            } else {
+              alert("Geolocation is not supported by this browser");
+            }
+          }
+          
+            //create autocomplete objects for all input
+            var options ={
+              types:['(cities)']
+            }
+          
+            var input1=document.getElementById("from");
+            var autocomplete1 = new google.maps.places.Autocomplete(input1, options);
+          
+            var input2=document.getElementById("to");
+            var autocomplete2 = new google.maps.places.Autocomplete(input2, options);
+            
+          </script>
+          </div>
+          
+        </div>
+        
+       </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

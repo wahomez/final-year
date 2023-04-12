@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+    <main>
+        <section class="ticket-section section-padding">
+            <div class="section-overlay"></div>
+
+            <div class="container">
+                <div class="row">
+                    <!-- Modal -->
+                    <div class="modal fade" id="gasModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Pay for a Gas</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form method="POST" action="/G-pay/" >
+                                <div class="modal-body">
+                                
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <select class="form-select" aria-label="Default select example" name="id">
+                                            <option selected>Choose the Order you want to pay for</option>
+                                            {% for order in orders  %}
+                                            <option value={{order.order_id}}>{{order.order_id}}</option>
+
+                                            {% endfor %}
+                                            
+                                        </select>
+                                        
+                                        
+                                    </div>                                      
+                                
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-outline-primary">Pay</button>
+                                </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="paypalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Deposit from Paypal</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form method="POST" action="/paypal-test/">
+                                <div class="modal-body">
+                                
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label class="form-label">Amount</label>
+                                        <input class="form-control" type="text" aria-label="readonly input example" name="amount">
+                                    </div>                                      
+                                
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-outline-primary">Deposit</button>
+                                </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="m-pesaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Deposit from Mpesa</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form method="POST" action="/stk-push/">
+                                <div class="modal-body">
+                                
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Phone Number</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="basic-addon3">+254</span>
+                                            <input type="text" class="form-control" name="mobile" aria-describedby="basic-addon3" placeholder="712345678" required>
+                                        </div>
+                                        <div id="emailHelp" class="form-text">You will receive an M-Pesa pop-up on your phone. Please enter your M-Pesa pin to complete the transaction</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Amount</label>
+                                        <input class="form-control" type="text" aria-label="readonly input example" name="amount">
+                                    </div>                                      
+                                
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-outline-primary">Deposit</button>
+                                </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-10 mx-auto">
+                        <form class="custom-form ticket-form mb-5 mb-lg-0 row g-3" action="#" method="post" role="form">
+                            <h6>Account Balance</h6>
+                            {% if savings %}
+                                {% for saving in savings  %}
+                                <br></br>
+                                <h2>Ksh. {{saving.balance}}</h2>
+                                Available
+                                <br></br>
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <a href="#" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#gasModal">Pay For Gas</a>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                            <form method='POST'>
+                                {% csrf_token %}
+                                <h7>You currently don't have a g-save account. Create one easily  <button type="submit" class="btn btn-outline-primary">here</button></h7>
+                            </form>
+                            
+                            {% endif %}
+                            
+                            
+                            
+                        </form>
+                        <br></br>
+                        <form class="custom-form ticket-form mb-5 mb-lg-0 row g-3" action="#" method="post" role="form">
+                            <h6>Recent Activity</h6>
+                            {% if transactions %}
+                            {% for transaction in  transactions%}
+                            <div role="button" href="" class="card">
+                                <div class="card-body">
+                                    {% comment %} <h7>Order Placed on {{order.date_ordered}}</h7><br> {% endcomment %}
+                                    <div class="row g-0">
+                                        <div class="col-md-8">
+                                            <h6>{{transaction.trans_type|upper}}</h6>
+                                            <h7>{{transaction.recipient}} </h7><br>
+                                            <h7>{{transaction.date}}</h7>
+                                            
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p style="text-align:right;">{% if transaction.trans_type == 'deposit' %}+{% else %}-{% endif %}{{transaction.amount}} KES</p>
+                                            <p style="text-align:right;">{{transaction.trans_id|truncatechars:10}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                                
+                            {% endfor %}
+                            
+                            <br></br>
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <br>
+                                    <a href="#" type="button" class="btn btn-outline-primary">Show all</a>
+                                </div>
+                            </div>
+                            {% else %}
+                            <h7>There are no recent transaction available</h7>
+                            {% endif %}
+                            
+                            
+                            
+                        </form>
+                    </div>
+                    <div class="col-lg-6 col-10 mx-auto">
+                        <div class="custom-form ticket-form mb-5 mb-lg-0" action="#" method="post" role="form">
+                            <h4 class="text-center mb-4">Deposit From</h4>
+                            <div class="row g-0">
+                                <div class="col-md-6">
+                                    <button class="w-100 btn btn-primary btn-lg mb-5" type="submit" data-bs-toggle="modal" data-bs-target="#m-pesaModal">Mpesa</button>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <button href="" class="w-100 btn btn-primary btn-lg mb-5" type="submit" data-bs-toggle="modal" data-bs-target="#paypalModal">PayPal</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+    </main>
+{% endblock content %}

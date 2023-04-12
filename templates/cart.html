@@ -9,11 +9,13 @@
             <div class="card text-bg-light mb-3">
                     
                 <div class="card-body">
+                    {% comment %} <a class="btn btn-outline-dark" href="{% url 'order-history' %}">&#x2190; Back to Order History</a> {% endcomment %}
                     <h4 class="text-center mb-4">Order History</h4>
                     <div class="container">
                         <div class="row row-cols-1 row-cols-md-3 g-4">
                             {% if orders %}
                             {% for order in orders  %}
+                            <div class="col">
                                 <div class="card text-bg-light mb-3">
                                     <div class="card-header">
                                         <h7><center><strong>Order ID :</strong> {{order.order_id|truncatechars:10}}</center></h7>
@@ -31,7 +33,7 @@
                                             </tr>
                                             <tr>
                                                 <th scope="row">Price</th>
-                                                <td>{{order.product.price}}</td>
+                                                <td>Ksh. {{order.product.price}}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Order date</th>
@@ -44,20 +46,29 @@
                                             
                                             <tr>
                                                 <th scope="row">Status </th>
-                                                <td>Pending...</td>
+                                                {% if order.completed == True %}
+                                                    <td>Completed</td>
+                                                {% else %}
+                                                    <td>Pending...</td>
+                                                {% endif %}
                                             </tr>
-                                            
-                                            
                                             </tbody>
                                             
                                         </table>
-                                        <center><a href="{% url 'checkout' order.order_id %}" class="btn btn-outline-primary">Go To order</a></center>
+                                        {% if order.paid %}
+                                            <center><a href="{% url 'order-detail' order.order_id %}" class="btn btn-outline-primary">View Order Details</a></center>
+                                        {% else %}
+                                            <center><a href="{% url 'checkout' order.order_id %}" class="btn btn-outline-primary">Go To Checkout</a></center>
+                                        {% endif %}
+                                        
                                     </div>
                                 </div>
+                            </div>
                             {% endfor %}
                             {%else%}
                             <h8><center>You have no previous orders. To make an order visit the <a href="{% url 'home' %}"><strong>Home</strong></a> page</center></h8>
                             {% endif %}
+                            
                         </div>
                     </div>
                     
