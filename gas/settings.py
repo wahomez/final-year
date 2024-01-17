@@ -28,7 +28,7 @@ DEBUG = True
 
 AUTH_USER_MODEL = 'base.User'
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = ["https://gas-genie.vercel.app"]
 
