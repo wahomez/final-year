@@ -28,12 +28,12 @@ DEBUG = True
 
 AUTH_USER_MODEL = 'base.User'
 
-ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1']
+ALLOWED_HOSTS = ['gas-genie.onrender.com', '127.0.0.1']
 
-CSRF_TRUSTED_ORIGINS = ["https://gas-genie.vercel.app"]
+CSRF_TRUSTED_ORIGINS = ["https://gas-genie.onrender.com"]
 
 CORS_ALLOWED_ORIGINS = [
-     "https://gas-genie.vercel.app"
+     "https://gas-genie.onrender.com"
     ]
 
 
