@@ -28,7 +28,7 @@ DEBUG = True
 
 AUTH_USER_MODEL = 'base.User'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.vercel.app']
 
 # CSRF_TRUSTED_ORIGINS = ["https://a527-102-135-170-111.eu.ngrok.io"]
 
@@ -65,8 +65,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    # 'defender.middleware.FailedLoginMiddleware',
-]
+ ]
 
 ROOT_URLCONF = 'gas.urls'
 
@@ -150,5 +149,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT  = os.path.join(BASE_DIR, 'static/images')
 MEDIA_URL = '/images/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'wahome4jeff@gmail.com'
+EMAIL_HOST_PASSWORD = 'vnwhvlhbzhhbpdlb'
+EMAIL_USE_TLS = True
 
 

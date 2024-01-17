@@ -30,6 +30,7 @@ urlpatterns = [
     path("map/", views.map_view, name="map"),
     path("savings/", views.savings_page, name="savings"),
     path("G-pay/", views.G_pay, name="G-pay"),
+    path("receipt/", views.generate_receipt, name="receipt"),
     path("G-pay/<str:pk>/", views.G_pay2, name="G-pay2"),
     # path("map-directions/", views.directions, name="map-directions"),
     path("get-directions/<str:pk>/", views.pin_location, name="direction"),

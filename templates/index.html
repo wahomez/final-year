@@ -198,22 +198,22 @@
                                     <div class="contact-form-body">
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-12">
-                                                <input type="text" name="contact-name" id="contact-name"
-                                                    class="form-control" placeholder="First Name" value="{{user.first_name}}" required>
+                                                <input type="text"  id="contact-name"
+                                                    class="form-control" placeholder="First Name" value="{{user.first_name}}" name="first_name" required>
                                             </div>
 
                                             <div class="col-lg-6 col-md-6 col-12">
-                                                <input type="text" name="contact-name" id="contact-name"
-                                                    class="form-control" placeholder="Last Name" value="{{user.last_name}}" required>
+                                                <input type="text"  id="contact-name"
+                                                    class="form-control" placeholder="Last Name" value="{{user.last_name}}" name="last_name" required>
                                             </div>
                                         </div>
 
-                                        <input type="email" name="contact-email" id="contact-email"
+                                        <input type="email" id="contact-email"
                                                     pattern="[^ @]*@[^ @]*" class="form-control"
-                                                    placeholder="Email Address" value="{{user.email}}" required>
+                                                    placeholder="Email Address" value="{{user.email}}" name="email" required>
 
-                                        <textarea name="contact-message" rows="3" class="form-control"
-                                            id="contact-message" placeholder="Question" required></textarea>
+                                        <textarea rows="3" class="form-control"
+                                            id="contact-message" placeholder="Question" name="question" required></textarea>
 
                                         <div class="col-lg-4 col-md-10 col-8 mx-auto">
                                             <button type="submit" class="form-control">Send message</button>

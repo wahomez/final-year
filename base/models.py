@@ -128,6 +128,8 @@ class Delivery(models.Model):
 
 class Invoice(models.Model):
     invoice_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, related_name="invoice", on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey(Order, related_name="invoice_order", on_delete=models.SET_NULL, null=True)
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     email = models.EmailField()

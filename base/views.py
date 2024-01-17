@@ -21,6 +21,13 @@ from django.views.decorators.csrf import csrf_exempt
 # import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import googlemaps
+from django.core.mail import send_mail
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+from google_currency import convert
+
 
 def dashboard(request):
     context = {
@@ -67,11 +74,28 @@ def pin_location(request, pk):
 # Create your views here.
 def homepage(request):
     product = Product.objects.all()
+    if request.method == "POST":
+        first_name = request.POST["first_name"]
+        last_name = request.POST["last_name"]
+        email = request.POST["email"]
+        question = request.POST["question"]
+
+        #sending an email
+        send_mail(
+            "Question from " + email, #subject
+            first_name + " " + last_name + " has the following is: " + question +".", #message
+            "wahome4jeff@gmail.com", #from email
+            ['jeffwahome2001@gmail.com'], #to email
+        )
+        messages.success(request, ("Your question has been submitted successfully. We will get back to you shortly!"))
+        return redirect("home")
+
 
     context = {
         "products" : product
     }
 
+    
     return render(request, "index.html", context)
 
 def stk_push(request, pk):
@@ -468,9 +492,10 @@ def G_pay2(request, pk):
             messages.success(request, ("Insufficient funds. Please deposit and try again!"))
             return redirect("savings")
 
+
 def savings_page(request):
     savings = Saving.objects.filter(user=request.user)
-    transaction = Transaction.objects.filter(user=request.user)
+    transaction = Transaction.objects.filter(user=request.user).order_by("-date")
     orders = Order.objects.filter(user=request.user, completed=False)
     if request.method == "POST":
         savings = Saving.objects.create(user=request.user)
@@ -544,7 +569,29 @@ def checkout_page(request,pk):
         
         messages.success(request, ("Successfully completed checkout.Your invoice will be sent to your email shortly."))
         return redirect("order-detail", order_id)
+    
+    # items = Cart.objects.filter(user=request.user)
+    # print(items)
+    
+    # item = order.product
+    context = {
+        "orders" : order,
+        "price" : price,
+        "total": total,
+        "quantity": quantity,
+        "order_id" : order_id,
+        "paid" : paid
+    }
+    return render(request, "checkout.html", context)
 
+def generate_receipt(request):
+    invoice = Invoice.objects.filter()
+
+    context = {
+        "invoices":invoice
+    }
+
+    return render(request, "receipt.html", context)
         
     # items = Cart.objects.filter(user=request.user)
     # print(items)
@@ -575,6 +622,9 @@ def create_payment(request, pk):
     price = order.product.price
     quantity = order.quantity
     total = price*quantity
+    json_string = convert('kes', 'usd', total)
+    convert_total = json.loads(json_string)
+    converted_total = convert_total["amount"]
     
     order_id =str(order.order_id)
     print("Order ID:", order_id)
@@ -596,13 +646,13 @@ def create_payment(request, pk):
                     "items": [{
                         "name": product,
                         "sku": order_id,
-                        "price": price,
+                        "price": converted_total,
                         "currency": "USD",
                         "quantity": quantity
                     }]
                 },
                 "amount": {
-                    "total": total,
+                    "total": converted_total,
                     "currency": "USD"
                 },
                 "description": "Transaction description.",
@@ -624,6 +674,10 @@ def create_payment2(request):
     )
     if request.POST:
         amount=request.POST['amount']
+        amount = float(amount)
+        json_string = convert('kes', 'usd', amount)
+        convert_total = json.loads(json_string)
+        converted_total = convert_total["amount"]
     else:
         HttpResponse("Nothing here")
         
@@ -641,13 +695,13 @@ def create_payment2(request):
                     "items": [{
                         "name": "Deposit to G-save",
                         "sku": "Deposit",
-                        "price": amount,
+                        "price": converted_total,
                         "currency": "USD",
                         "quantity": "1"
                     }]
                 },
                 "amount": {
-                    "total": amount,
+                    "total": converted_total,
                     "currency": "USD"
                 },
                 "description": "Transaction description.",
@@ -685,9 +739,13 @@ def execute_payment(request):
     payment = paypalrestsdk.Payment.find(payment_id)
     booking_id = payment.transactions[0].custom
     amount = payment.transactions[0].amount.total
+    amount = float(amount)
+    json_string = convert('usd', 'kes', amount)
+    convert_total = json.loads(json_string)
+    converted_total = convert_total["amount"]
     account = Saving.objects.get(user=request.user)
     savings = account.balance
-    amount = float(amount)
+    amount = float(converted_total)
     # print("Savings", type(savings))
     # print("Amount", type(amount))
     # print(amount)
