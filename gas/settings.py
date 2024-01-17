@@ -28,12 +28,11 @@ DEBUG = True
 
 AUTH_USER_MODEL = 'base.User'
 
-ALLOWED_HOSTS = ['gas-genie.vercel.app']
+ALLOWED_HOSTS = ['.vercel.app']
 
 CSRF_TRUSTED_ORIGINS = ["https://gas-genie.vercel.app"]
 
 CORS_ALLOWED_ORIGINS = [
-     "https://a527-102-135-170-111.eu.ngrok.io",
      "https://gas-genie.vercel.app"
     ]
 
